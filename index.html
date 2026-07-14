@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog Manager — Abacus Austria</title>
+  <title>Blog Generator — Abacus HR Services</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -26,8 +26,8 @@
     html { -webkit-text-size-adjust: 100%; }
 
     body {
-      background: var(--aba-black-dark);
-      color: var(--aba-white);
+      background: var(--grey-light);
+      color: var(--aba-black);
       font-family: var(--font-primary);
       font-weight: 300;
       letter-spacing: 1px;
@@ -37,13 +37,13 @@
       flex-direction: column;
     }
 
-    /* ── HEADER (AbaSchwarz, weißes Logo) ── */
+    /* ── HEADER (weiß, schwarzes Logo) ── */
     .topbar {
       position: sticky;
       top: 0;
       z-index: 10;
-      background: var(--aba-black);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--aba-white);
+      border-bottom: 1px solid var(--grey-mid);
       height: 4rem;
       display: flex;
       align-items: center;
@@ -69,16 +69,16 @@
       font-size: 13px;
       font-weight: 400;
       letter-spacing: 1px;
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--ink-muted);
       text-transform: uppercase;
       padding-left: 0.75rem;
-      border-left: 1px solid rgba(255, 255, 255, 0.2);
+      border-left: 1px solid var(--grey-mid);
     }
 
     .logout-btn {
       background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: var(--aba-white);
+      border: 1px solid var(--grey-middark);
+      color: var(--aba-black);
       font-family: var(--font-primary);
       font-size: 13px;
       font-weight: 400;
@@ -88,7 +88,11 @@
       border-radius: var(--radius-md);
       transition: all 0.15s ease;
     }
-    .logout-btn:hover { background: var(--aba-red); border-color: var(--aba-red); }
+    .logout-btn:hover {
+      background: var(--aba-red);
+      border-color: var(--aba-red);
+      color: var(--aba-white);
+    }
     .logout-btn:focus-visible { outline: 2px solid var(--aba-red); outline-offset: 2px; }
 
     /* ── LAYOUT ── */
@@ -107,9 +111,10 @@
     }
 
     .card {
-      background: var(--aba-black);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--aba-white);
+      border: 1px solid var(--grey-mid);
       border-radius: var(--radius-lg);
+      box-shadow: 0 1px 3px rgba(40, 40, 40, 0.06);
       width: 100%;
       max-width: 880px;
       padding: 2.5rem;
@@ -145,7 +150,7 @@
     .subtitle {
       font-size: 18px;
       font-weight: 300;
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--ink-muted);
       margin-bottom: 2rem;
       max-width: 48ch;
     }
@@ -153,18 +158,18 @@
     .workflow-note {
       font-size: 14px;
       font-weight: 300;
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--ink-muted);
       margin-bottom: 2rem;
       padding-top: 1rem;
       border-top: 2px solid var(--aba-red);
     }
-    .workflow-note strong { font-weight: 700; color: var(--aba-white); }
+    .workflow-note strong { font-weight: 700; color: var(--aba-black); }
 
     /* ── FORM ── */
     .field-label {
       font-size: 12px;
       font-weight: 400;
-      color: rgba(255, 255, 255, 0.55);
+      color: var(--ink-muted);
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 0.4rem;
@@ -187,19 +192,19 @@
     input[type="password"],
     textarea {
       width: 100%;
-      background: var(--aba-black-dark);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: var(--aba-white);
+      border: 1px solid var(--grey-middark);
       border-radius: var(--radius-md);
       padding: 0.7rem 0.9rem;
       font-family: var(--font-primary);
       font-size: 16px;
       font-weight: 300;
       letter-spacing: 0.5px;
-      color: var(--aba-white);
+      color: var(--aba-black);
       outline: none;
       transition: border-color 0.15s ease;
     }
-    input::placeholder, textarea::placeholder { color: rgba(255, 255, 255, 0.25); }
+    input::placeholder, textarea::placeholder { color: var(--grey-middark); }
     input:focus, textarea:focus {
       border-color: var(--aba-red);
       box-shadow: 0 0 0 1px var(--aba-red);
@@ -276,9 +281,10 @@
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     .modal {
-      background: var(--aba-black);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--aba-white);
+      border: 1px solid var(--grey-mid);
       border-radius: var(--radius-lg);
+      box-shadow: 0 8px 30px rgba(40, 40, 40, 0.18);
       max-width: 460px;
       width: 100%;
       padding: 2.5rem;
@@ -290,7 +296,7 @@
       width: 3rem;
       height: 3rem;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--grey-light);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -308,11 +314,11 @@
     .modal p {
       font-size: 16px;
       font-weight: 300;
-      color: rgba(255, 255, 255, 0.65);
+      color: var(--ink-muted);
       line-height: 1.6;
       margin-bottom: 1.75rem;
     }
-    .modal p strong { font-weight: 700; color: var(--aba-white); }
+    .modal p strong { font-weight: 700; color: var(--aba-black); }
     .modal .btn { width: auto; min-width: 8rem; }
   </style>
 </head>
@@ -322,8 +328,8 @@
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <img src="media/01_Abacus_Logo_RGB_neg.png" alt="Abacus">
-        <span class="brand-label">Blog Manager</span>
+        <img src="media/01_Abacus_Logo_RGB.png" alt="Abacus HR Services">
+        <span class="brand-label">HR Services · Blog Generator</span>
       </div>
       <button class="logout-btn" id="logout-btn" onclick="logout()" style="display:none">Abmelden →</button>
     </div>
@@ -335,7 +341,7 @@
     <div id="login-view">
       <div class="card">
         <p class="eyebrow">Zugang</p>
-        <h1>Anmeldung</h1>
+        <h1>Blog Generator</h1>
         <p class="subtitle">Bitte das Passwort eingeben, um fortzufahren.</p>
 
         <div class="field">
@@ -352,25 +358,25 @@
     <div id="app-view">
       <div class="card">
         <p class="eyebrow">Neuer Beitrag</p>
-        <h1>Blog erstellen</h1>
-        <p class="workflow-note">→ Der Blog landet als <strong>Draft in Sanity</strong>.</p>
+        <h1>Blog generieren</h1>
+        <p class="workflow-note">→ Der Blog landet als <strong>Google Doc in Google Drive</strong>.</p>
 
         <div class="form-fields">
           <div class="field">
             <label class="field-label" for="c-thema">Blog-Thema</label>
-            <input type="text" id="c-thema" placeholder="ERP-Integration im Mittelstand">
+            <input type="text" id="c-thema" placeholder="Payroll für SOKA-BAU im Baugewerbe">
           </div>
           <div class="field">
             <label class="field-label" for="c-keyword">Fokus-Keyword</label>
-            <input type="text" id="c-keyword" placeholder="ERP-Integration">
+            <input type="text" id="c-keyword" placeholder="SOKA-BAU Lohnabrechnung">
           </div>
           <div class="field">
             <label class="field-label" for="c-sek">Sekundäre Keywords</label>
-            <input type="text" id="c-sek" placeholder="Middleware, Schnittstellen">
+            <input type="text" id="c-sek" placeholder="Baulohn, Sozialkassenverfahren">
           </div>
           <div class="field">
             <label class="field-label" for="c-zielgruppe">Zielgruppe</label>
-            <input type="text" id="c-zielgruppe" placeholder="IT-Leiter im Mittelstand">
+            <input type="text" id="c-zielgruppe" placeholder="Personalverantwortliche im Baugewerbe">
           </div>
           <div class="field">
             <label class="field-label" for="c-angle">Angle</label>
@@ -378,7 +384,7 @@
           </div>
           <div class="field">
             <label class="field-label" for="c-links">Interne Links</label>
-            <input type="text" id="c-links" placeholder="/erp-einfuehrung, /blog/xyz">
+            <input type="text" id="c-links" placeholder="/baulohn, /blog/xyz">
           </div>
           <div class="field full">
             <label class="field-label" for="c-hinweise">Besondere Hinweise</label>
@@ -408,7 +414,7 @@
         </svg>
       </div>
       <h2 id="modal-title">Auftrag gesendet</h2>
-      <p>Der Workflow wurde gestartet. Es dauert <strong>ca. 20 Minuten</strong>, bis der Blog als Draft in <strong>Sanity</strong> landet.</p>
+      <p>Der Workflow wurde gestartet. Es dauert <strong>ca. 20 Minuten</strong>, bis der Blog als <strong>Google Doc in Google Drive</strong> landet.</p>
       <button class="btn btn-primary" onclick="closeModal()">Verstanden</button>
     </div>
   </div>
