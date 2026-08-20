@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { isBrand, passwordHashFor, tokenFor, safeEqual, cors } = require('./brands');
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
@@ -8,24 +9,37 @@ exports.handler = async (event) => {
     return { statusCode: 405, headers: cors() };
   }
 
-  let password;
+  let password, brand;
   try {
-    ({ password } = JSON.parse(event.body || '{}'));
+    ({ password, brand } = JSON.parse(event.body || '{}'));
   } catch {
     return { statusCode: 400, headers: cors() };
   }
 
-  if (!password) {
+  // Rückwärtskompatibel: ohne Marke = HR Services
+  if (!brand) brand = 'hrservices';
+
+  if (!password || !isBrand(brand)) {
     return { statusCode: 400, headers: cors() };
+  }
+
+  const expectedHash = passwordHashFor(brand);
+  const token = tokenFor(brand);
+  if (!expectedHash || !token) {
+    return {
+      statusCode: 500,
+      headers: { ...cors(), 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: `Zugang für "${brand}" ist nicht konfiguriert` }),
+    };
   }
 
   const hash = crypto.createHash('sha256').update(password).digest('hex');
 
-  if (hash === process.env.PASSWORD_HASH) {
+  if (safeEqual(hash, expectedHash)) {
     return {
       statusCode: 200,
       headers: { ...cors(), 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token: process.env.API_TOKEN }),
+      body: JSON.stringify({ token, brand }),
     };
   }
 
@@ -35,11 +49,3 @@ exports.handler = async (event) => {
     body: JSON.stringify({ error: 'Ungültiges Passwort' }),
   };
 };
-
-function cors() {
-  return {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-  };
-}

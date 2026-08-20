@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog Generator — Abacus HR Services</title>
+  <title>Blog Generator — Abacus HR Services &amp; Umantis</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
       --aba-red: #de323c;
       --aba-red-dark: #c20936;
+      --uma-plum: #8e2a6c;
+      --uma-plum-dark: #72215a;
       --aba-white: #ffffff;
       --aba-black: #282828;
       --aba-black-dark: #141414;
@@ -21,6 +23,14 @@
       --font-primary: Europa, Arial, Helvetica, sans-serif;
       --radius-md: 0.375rem;
       --radius-lg: 0.5rem;
+
+      /* Aktive Markenfarbe – wird per data-brand auf <body> umgeschaltet */
+      --accent: var(--aba-red);
+      --accent-dark: var(--aba-red-dark);
+    }
+    body[data-brand="umantis"] {
+      --accent: var(--uma-plum);
+      --accent-dark: var(--uma-plum-dark);
     }
 
     html { -webkit-text-size-adjust: 100%; }
@@ -65,6 +75,7 @@
 
     .brand { display: flex; align-items: center; gap: 0.75rem; }
     .brand img { height: 1.5rem; width: auto; display: block; }
+    .brand img.logo-umantis { height: 1.9rem; }
     .brand-label {
       font-size: 13px;
       font-weight: 400;
@@ -89,11 +100,11 @@
       transition: all 0.15s ease;
     }
     .logout-btn:hover {
-      background: var(--aba-red);
-      border-color: var(--aba-red);
+      background: var(--accent);
+      border-color: var(--accent);
       color: var(--aba-white);
     }
-    .logout-btn:focus-visible { outline: 2px solid var(--aba-red); outline-offset: 2px; }
+    .logout-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
     /* ── LAYOUT ── */
     main {
@@ -120,7 +131,6 @@
       padding: 2.5rem;
       animation: fadeUp 0.4s ease both;
     }
-    #login-view .card { max-width: 440px; }
     @media (max-width: 480px) {
       .card { padding: 1.75rem 1.25rem; }
     }
@@ -135,7 +145,7 @@
       letter-spacing: 2px;
       font-size: 12px;
       font-weight: 400;
-      color: var(--aba-red);
+      color: var(--accent);
       margin-bottom: 0.5rem;
     }
 
@@ -161,9 +171,79 @@
       color: var(--ink-muted);
       margin-bottom: 2rem;
       padding-top: 1rem;
-      border-top: 2px solid var(--aba-red);
+      border-top: 2px solid var(--accent);
     }
     .workflow-note strong { font-weight: 700; color: var(--aba-black); }
+
+    /* ── LOGIN: ZWEIGETEILT ── */
+    #login-view { display: block; width: 100%; max-width: 960px; }
+    #app-view { display: none; }
+
+    .login-intro { text-align: center; margin-bottom: 2rem; }
+    .login-intro .eyebrow { color: var(--ink-muted); }
+    .login-intro .subtitle { margin: 0 auto; }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 720px) {
+      .split { grid-template-columns: 1fr; }
+    }
+
+    .brand-card {
+      background: var(--aba-white);
+      border: 1px solid var(--grey-mid);
+      border-top: 4px solid var(--brand-color);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 1px 3px rgba(40, 40, 40, 0.06);
+      padding: 2.25rem 2rem;
+      display: flex;
+      flex-direction: column;
+      animation: fadeUp 0.4s ease both;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .brand-card:focus-within,
+    .brand-card:hover {
+      box-shadow: 0 6px 20px rgba(40, 40, 40, 0.10);
+      transform: translateY(-2px);
+    }
+    .brand-card.hrservices { --brand-color: var(--aba-red); --brand-color-dark: var(--aba-red-dark); animation-delay: 0.05s; }
+    .brand-card.umantis    { --brand-color: var(--uma-plum); --brand-color-dark: var(--uma-plum-dark); animation-delay: 0.12s; }
+
+    .brand-card .logo-wrap {
+      height: 3.5rem;
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.25rem;
+    }
+    .brand-card .logo-wrap img { max-height: 2.25rem; width: auto; max-width: 100%; display: block; }
+    .brand-card.umantis .logo-wrap img { max-height: 2.9rem; }
+
+    .brand-card h2 {
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.3;
+      letter-spacing: 0.8px;
+      margin-bottom: 0.35rem;
+    }
+    .brand-card .brand-desc {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--ink-muted);
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+
+    .brand-card input[type="password"]:focus {
+      border-color: var(--brand-color);
+      box-shadow: 0 0 0 1px var(--brand-color);
+    }
+    .brand-card .error-msg { color: var(--brand-color); }
+    .brand-card .btn-primary { background: var(--brand-color); }
+    .brand-card .btn-primary:hover:not(:disabled) { background: var(--brand-color-dark); }
+    .brand-card .btn:focus-visible { outline-color: var(--brand-color); }
 
     /* ── FORM ── */
     .field-label {
@@ -206,14 +286,14 @@
     }
     input::placeholder, textarea::placeholder { color: var(--grey-middark); }
     input:focus, textarea:focus {
-      border-color: var(--aba-red);
-      box-shadow: 0 0 0 1px var(--aba-red);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
     }
     textarea { resize: vertical; min-height: 84px; line-height: 1.6; }
 
     .error-msg {
       font-size: 13px;
-      color: var(--aba-red);
+      color: var(--accent);
       margin-top: 0.5rem;
       min-height: 18px;
     }
@@ -236,15 +316,15 @@
       justify-content: center;
       gap: 0.5rem;
     }
-    .btn-primary { background: var(--aba-red); color: var(--aba-white); }
-    .btn-primary:hover:not(:disabled) { background: var(--aba-red-dark); }
+    .btn-primary { background: var(--accent); color: var(--aba-white); }
+    .btn-primary:hover:not(:disabled) { background: var(--accent-dark); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn:focus-visible { outline: 2px solid var(--aba-red); outline-offset: 2px; }
+    .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
     .cta-row {
       margin-top: 1.75rem;
       padding-top: 1.75rem;
-      border-top: 2px solid var(--aba-red);
+      border-top: 2px solid var(--accent);
     }
 
     .spinner {
@@ -258,11 +338,6 @@
       flex-shrink: 0;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ── LOGIN ── */
-    #login-view { display: block; }
-    #app-view { display: none; }
-    #login-view .card { max-width: 440px; }
 
     /* ── POPUP / MODAL ── */
     .modal-backdrop {
@@ -288,7 +363,7 @@
       max-width: 460px;
       width: 100%;
       padding: 2.5rem;
-      border-top: 4px solid var(--aba-red);
+      border-top: 4px solid var(--accent);
       animation: fadeUp 0.3s ease both;
     }
 
@@ -302,7 +377,7 @@
       justify-content: center;
       margin-bottom: 1.25rem;
     }
-    .modal-icon svg { width: 1.6rem; height: 1.6rem; stroke: var(--aba-red); }
+    .modal-icon svg { width: 1.6rem; height: 1.6rem; stroke: var(--accent); }
 
     .modal h2 {
       font-size: 24px;
@@ -322,14 +397,14 @@
     .modal .btn { width: auto; min-width: 8rem; }
   </style>
 </head>
-<body>
+<body data-brand="">
 
   <!-- ── HEADER ── -->
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <img src="media/01_Abacus_Logo_RGB.png" alt="Abacus HR Services">
-        <span class="brand-label">HR Services · Blog Generator</span>
+        <img id="header-logo" src="media/01_Abacus_Logo_RGB.png" alt="Abacus">
+        <span class="brand-label" id="header-label">Blog Generator</span>
       </div>
       <button class="logout-btn" id="logout-btn" onclick="logout()" style="display:none">Abmelden →</button>
     </div>
@@ -337,58 +412,88 @@
 
   <main>
 
-    <!-- ── LOGIN ── -->
+    <!-- ── LOGIN (zweigeteilt) ── -->
     <div id="login-view">
-      <div class="card">
+      <div class="login-intro">
         <p class="eyebrow">Zugang</p>
         <h1>Blog Generator</h1>
-        <p class="subtitle">Bitte das Passwort eingeben, um fortzufahren.</p>
+        <p class="subtitle">Bereich wählen und das jeweilige Passwort eingeben.</p>
+      </div>
 
-        <div class="field">
-          <label class="field-label" for="password">Passwort</label>
-          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
-          <div class="error-msg" id="login-error"></div>
-        </div>
+      <div class="split">
 
-        <button class="btn btn-primary" onclick="login()">Anmelden</button>
+        <!-- Abacus HR Services -->
+        <section class="brand-card hrservices" aria-labelledby="title-hrservices">
+          <div class="logo-wrap">
+            <img src="media/01_Abacus_Logo_RGB.png" alt="Abacus">
+          </div>
+          <h2 id="title-hrservices">Abacus HR Services</h2>
+          <p class="brand-desc">Fach-Blogs zu Lohn- und Gehaltsabrechnung, Baulohn und Payroll-Outsourcing.</p>
+
+          <div class="field">
+            <label class="field-label" for="pw-hrservices">Passwort HR Services</label>
+            <input type="password" id="pw-hrservices" placeholder="••••••••" autocomplete="current-password">
+            <div class="error-msg" id="err-hrservices"></div>
+          </div>
+
+          <button class="btn btn-primary" id="btn-hrservices" onclick="login('hrservices')">Anmelden</button>
+        </section>
+
+        <!-- Abacus Umantis -->
+        <section class="brand-card umantis" aria-labelledby="title-umantis">
+          <div class="logo-wrap">
+            <img src="media/Abacus_Umantis_Logo.jpeg" alt="Abacus Umantis">
+          </div>
+          <h2 id="title-umantis">Abacus Umantis</h2>
+          <p class="brand-desc">Fach-Blogs zu Talent Management, HR-Software und digitaler Personalarbeit.</p>
+
+          <div class="field">
+            <label class="field-label" for="pw-umantis">Passwort Umantis</label>
+            <input type="password" id="pw-umantis" placeholder="••••••••" autocomplete="current-password">
+            <div class="error-msg" id="err-umantis"></div>
+          </div>
+
+          <button class="btn btn-primary" id="btn-umantis" onclick="login('umantis')">Anmelden</button>
+        </section>
+
       </div>
     </div>
 
     <!-- ── APP ── -->
     <div id="app-view">
       <div class="card">
-        <p class="eyebrow">Neuer Beitrag</p>
+        <p class="eyebrow" id="app-eyebrow">Neuer Beitrag</p>
         <h1>Blog generieren</h1>
         <p class="workflow-note">→ Der Blog landet als <strong>Google Doc in Google Drive</strong>.</p>
 
         <div class="form-fields">
           <div class="field">
             <label class="field-label" for="c-thema">Blog-Thema</label>
-            <input type="text" id="c-thema" placeholder="Payroll für SOKA-BAU im Baugewerbe">
+            <input type="text" id="c-thema" data-ph-hrservices="Payroll für SOKA-BAU im Baugewerbe" data-ph-umantis="Talent Management in mittelständischen Unternehmen">
           </div>
           <div class="field">
             <label class="field-label" for="c-keyword">Fokus-Keyword</label>
-            <input type="text" id="c-keyword" placeholder="SOKA-BAU Lohnabrechnung">
+            <input type="text" id="c-keyword" data-ph-hrservices="SOKA-BAU Lohnabrechnung" data-ph-umantis="Talent Management Software">
           </div>
           <div class="field">
             <label class="field-label" for="c-sek">Sekundäre Keywords</label>
-            <input type="text" id="c-sek" placeholder="Baulohn, Sozialkassenverfahren">
+            <input type="text" id="c-sek" data-ph-hrservices="Baulohn, Sozialkassenverfahren" data-ph-umantis="Mitarbeitergespräche, Zielvereinbarungen">
           </div>
           <div class="field">
             <label class="field-label" for="c-zielgruppe">Zielgruppe</label>
-            <input type="text" id="c-zielgruppe" placeholder="Personalverantwortliche im Baugewerbe">
+            <input type="text" id="c-zielgruppe" data-ph-hrservices="Personalverantwortliche im Baugewerbe" data-ph-umantis="HR-Leitungen im Mittelstand">
           </div>
           <div class="field">
             <label class="field-label" for="c-angle">Angle</label>
-            <input type="text" id="c-angle" placeholder="Praxisnah mit Checkliste">
+            <input type="text" id="c-angle" data-ph-hrservices="Praxisnah mit Checkliste" data-ph-umantis="Strategisch mit Praxisbeispielen">
           </div>
           <div class="field">
             <label class="field-label" for="c-links">Interne Links</label>
-            <input type="text" id="c-links" placeholder="/baulohn, /blog/xyz">
+            <input type="text" id="c-links" data-ph-hrservices="/baulohn, /blog/xyz" data-ph-umantis="/talent-management, /blog/xyz">
           </div>
           <div class="field full">
             <label class="field-label" for="c-hinweise">Besondere Hinweise</label>
-            <textarea id="c-hinweise" placeholder="Ton sachlich, ca. 1500 Wörter"></textarea>
+            <textarea id="c-hinweise" data-ph-hrservices="Ton sachlich, ca. 1500 Wörter" data-ph-umantis="Ton sachlich, ca. 1500 Wörter"></textarea>
           </div>
         </div>
 
@@ -421,49 +526,107 @@
 
   <script>
     // Kein Klartext-Passwort und keine Webhook-URLs im Quellcode.
-    // Alle Credentials liegen in Netlify-Umgebungsvariablen (siehe Setup-Anleitung).
+    // Alle Credentials liegen in Netlify-Umgebungsvariablen (siehe README).
 
-    let apiToken = null;
+    const BRANDS = {
+      hrservices: {
+        name: 'Abacus HR Services',
+        logo: 'media/01_Abacus_Logo_RGB.png',
+        logoClass: '',
+        label: 'HR Services · Blog Generator',
+        eyebrow: 'Neuer Beitrag · HR Services',
+      },
+      umantis: {
+        name: 'Abacus Umantis',
+        logo: 'media/Abacus_Umantis_Logo.jpeg',
+        logoClass: 'logo-umantis',
+        label: 'Umantis · Blog Generator',
+        eyebrow: 'Neuer Beitrag · Umantis',
+      },
+    };
+
+    let session = { brand: null, token: null };
 
     // ── LOGIN ─────────────────────────────────────────────────
-    document.getElementById('password').addEventListener('keydown', e => {
-      if (e.key === 'Enter') login();
-    });
+    for (const brand of Object.keys(BRANDS)) {
+      document.getElementById('pw-' + brand).addEventListener('keydown', e => {
+        if (e.key === 'Enter') login(brand);
+      });
+    }
 
-    async function login() {
-      const pw = document.getElementById('password').value;
-      const errEl = document.getElementById('login-error');
+    async function login(brand) {
+      const pwEl  = document.getElementById('pw-' + brand);
+      const errEl = document.getElementById('err-' + brand);
+      const btn   = document.getElementById('btn-' + brand);
       errEl.textContent = '';
+
+      if (!pwEl.value) {
+        errEl.textContent = 'Bitte Passwort eingeben.';
+        pwEl.focus();
+        return;
+      }
+
+      btn.disabled = true;
       try {
         const res = await fetch('/.netlify/functions/auth', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: pw }),
+          body: JSON.stringify({ brand, password: pwEl.value }),
         });
         if (res.ok) {
           const data = await res.json();
-          apiToken = data.token;
+          session = { brand, token: data.token };
+          applyBrand(brand);
           document.getElementById('login-view').style.display = 'none';
           document.getElementById('app-view').style.display  = 'block';
           document.getElementById('logout-btn').style.display = 'inline-flex';
+          pwEl.value = '';
         } else {
           errEl.textContent = 'Falsches Passwort.';
-          document.getElementById('password').value = '';
-          document.getElementById('password').focus();
+          pwEl.value = '';
+          pwEl.focus();
         }
       } catch {
         errEl.textContent = 'Verbindungsfehler – bitte erneut versuchen.';
       }
+      btn.disabled = false;
+    }
+
+    function applyBrand(brand) {
+      const b = BRANDS[brand];
+      document.body.dataset.brand = brand;
+
+      const logo = document.getElementById('header-logo');
+      logo.src = b.logo;
+      logo.alt = b.name;
+      logo.className = b.logoClass;
+
+      document.getElementById('header-label').textContent = b.label;
+      document.getElementById('app-eyebrow').textContent  = b.eyebrow;
+
+      document.querySelectorAll('[data-ph-' + brand + ']').forEach(el => {
+        el.placeholder = el.dataset['ph' + brand.charAt(0).toUpperCase() + brand.slice(1)];
+      });
+    }
+
+    function resetBrand() {
+      document.body.dataset.brand = '';
+      const logo = document.getElementById('header-logo');
+      logo.src = 'media/01_Abacus_Logo_RGB.png';
+      logo.alt = 'Abacus';
+      logo.className = '';
+      document.getElementById('header-label').textContent = 'Blog Generator';
     }
 
     function logout() {
-      apiToken = null;
+      session = { brand: null, token: null };
       closeModal();
       document.getElementById('create-error').textContent = '';
+      document.querySelectorAll('#app-view input, #app-view textarea').forEach(el => el.value = '');
       document.getElementById('app-view').style.display  = 'none';
       document.getElementById('logout-btn').style.display = 'none';
       document.getElementById('login-view').style.display = 'block';
-      document.getElementById('password').value = '';
+      resetBrand();
     }
 
     // ── SENDEN ───────────────────────────────────────────────
@@ -499,10 +662,12 @@
         const res = await fetch('/.netlify/functions/send', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'create', message, token: apiToken }),
+          body: JSON.stringify({ type: 'create', brand: session.brand, message, token: session.token }),
         });
         if (res.ok) {
           openModal();
+        } else if (res.status === 401) {
+          errEl.textContent = '✗ Sitzung ungültig – bitte neu anmelden.';
         } else {
           errEl.textContent = '✗ Fehler beim Senden (Status ' + res.status + ').';
         }
